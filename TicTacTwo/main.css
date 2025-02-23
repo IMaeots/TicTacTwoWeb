@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 24px;
+}
+
+h1 {
+    margin-bottom: 8px;
+}
+
+#gameHelper {
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(5, 96px);
+    grid-template-rows: repeat(5, 96px);
+    gap: 8px;
+    justify-content: center;
+    margin: 24px auto;
+}
+
+.cell {
+    width: 96px;
+    height: 96px;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: bold;
+    cursor: not-allowed;
+    border-radius: 8px;
+}
+
+.playable {
+    background-color: lightskyblue;
+    cursor: pointer;
+}
+
+.playable:hover {
+    background-color: lightblue;
+}
+
+.X {
+    color: red;
+}
+
+.O {
+    color: blue;
+}

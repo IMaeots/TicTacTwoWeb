@@ -9,7 +9,15 @@
     <body>
         <h1>Basic TicTacTwo by IMaeots</h1>
         <p id="gameHelper">X's Turn</p>
-        <div id="gameBoard"></div>
+        <div class="game-container">
+            <button id="moveUp" class="grid-control" disabled>↑</button>
+            <div class="horizontal-controls">
+                <button id="moveLeft" class="grid-control" disabled>←</button>
+                <div id="gameBoard"></div>
+                <button id="moveRight" class="grid-control" disabled>→</button>
+            </div>
+            <button id="moveDown" class="grid-control" disabled>↓</button>
+        </div>
         <script src="app.js"></script>
     </body>
 </html>

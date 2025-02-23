@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPlayer = "X";
     let boardState = Array(25).fill(null);
     let moveCount = 0;
-    let playableCells = new Set([6, 7, 8, 11, 12, 13, 16, 17, 18]);
     let selectedMarker = null;
+    let gridPosition = { row: 1, col: 1 };
+    let playableCells = new Set([6, 7, 8, 11, 12, 13, 16, 17, 18]);
 
     function createBoard() {
         for (let i = 0; i < 25; i++) {
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        if (moveCount >= 6 && boardState[index] === currentPlayer) {
+        if (moveCount >= 4 && boardState[index] === currentPlayer) {
             selectMarker(index, cell);
             return;
         }
@@ -44,19 +45,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function handleMoveMade() {
+        if (checkWin()) {
+            endGame();
+            return;
+        }
+        switchPlayer();
+        updateHelperText(`${currentPlayer}'s Turn`);
+    }
+
     function placeMarker(index, cell) {
         boardState[index] = currentPlayer;
         cell.textContent = currentPlayer;
         cell.classList.add(currentPlayer);
         moveCount++;
 
-        if (checkWin()) {
-            gameHelper.textContent = `${currentPlayer} Wins!`;
-            disableBoard();
-            return;
+        if (moveCount === 4) {
+            enableGridControls();
         }
 
-        switchPlayer();
+        handleMoveMade();
     }
 
     function selectMarker(index, cell) {
@@ -83,13 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         selectedMarker = null;
 
-        if (checkWin()) {
-            gameHelper.textContent = `${currentPlayer} Wins!`;
-            disableBoard();
-            return;
-        }
-
-        switchPlayer();
+        handleMoveMade();
     }
 
     function clearSelectedMarker() {
@@ -105,15 +107,73 @@ document.addEventListener("DOMContentLoaded", () => {
         gameHelper.textContent = `${currentPlayer}'s Turn`;
     }
 
-    // TODO: Currently accounts only for hardcoded size & non-movable grid.
+    function enableGridControls() {
+        const controls = document.querySelectorAll('.grid-control');
+        controls.forEach(control => control.disabled = false);
+    }
+
+    function updatePlayableCells() {
+        const baseGrid = [
+            [6, 7, 8],
+            [11, 12, 13],
+            [16, 17, 18]
+        ];
+
+        const offset = (gridPosition.row - 1) * 5 + (gridPosition.col - 1);
+        playableCells.clear();
+
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                const newIndex = baseGrid[row][col] + offset;
+                if (newIndex >= 0 && newIndex < 25) {
+                    playableCells.add(newIndex);
+                }
+            }
+        }
+
+        document.querySelectorAll('.cell').forEach(cell => {
+            const index = parseInt(cell.getAttribute('data-index'));
+            cell.classList.toggle('playable', playableCells.has(index));
+            if (playableCells.has(index)) {
+                cell.addEventListener('click', handleCellClick);
+            } else {
+                cell.removeEventListener('click', handleCellClick);
+            }
+        });
+    }
+
+    function moveGrid(direction) {
+        const movements = {
+            up: () => gridPosition.row > 0 && gridPosition.row--,
+            down: () => gridPosition.row < 2 && gridPosition.row++,
+            left: () => gridPosition.col > 0 && gridPosition.col--,
+            right: () => gridPosition.col < 2 && gridPosition.col++
+        };
+
+        if (movements[direction]()) {
+            updatePlayableCells();
+            handleMoveMade();
+        }
+    }
+
     function checkWin() {
-        const winPatterns = [
+        const baseWinPatterns = [
             [6, 7, 8], [11, 12, 13], [16, 17, 18],
             [6, 11, 16], [7, 12, 17], [8, 13, 18],
             [6, 12, 18], [8, 12, 16]
         ];
 
-        return winPatterns.some(pattern =>
+        const offset = (gridPosition.row - 1) * 5 + (gridPosition.col - 1);
+
+        const currentWinPatterns = baseWinPatterns.map(pattern =>
+            pattern.map(index => {
+                const newIndex = index + offset;
+                return newIndex >= 0 && newIndex < 25 ? newIndex : null;
+            })
+        );
+
+        return currentWinPatterns.some(pattern =>
+            !pattern.includes(null) &&
             pattern.every(index => boardState[index] === currentPlayer)
         );
     }
@@ -122,7 +182,24 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".playable").forEach(cell => {
             cell.removeEventListener("click", handleCellClick);
         });
+        document.querySelectorAll(".grid-control").forEach(control => {
+            control.disabled = true;
+        });
     }
+
+    function endGame() {
+        disableBoard();
+        gameHelper.textContent = `${currentPlayer} Wins!`;
+    }
+
+    function updateHelperText(text) {
+        gameHelper.textContent = text;
+    }
+
+    document.getElementById('moveUp').addEventListener('click', () => moveGrid('up'));
+    document.getElementById('moveDown').addEventListener('click', () => moveGrid('down'));
+    document.getElementById('moveLeft').addEventListener('click', () => moveGrid('left'));
+    document.getElementById('moveRight').addEventListener('click', () => moveGrid('right'));
 
     createBoard();
 });

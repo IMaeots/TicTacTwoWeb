@@ -22,6 +22,37 @@ h1 {
     margin: 24px auto;
 }
 
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.horizontal-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grid-control {
+    padding: 8px 16px;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 4px;
+}
+
+.grid-control:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.grid-control:not(:disabled):hover {
+    background-color: #d0d0d0;
+}
+
 .cell {
     width: 96px;
     height: 96px;

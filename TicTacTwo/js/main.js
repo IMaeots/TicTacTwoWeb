@@ -45,4 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
         gameHelper.style.display = 'block';
         gameHelper.textContent = "AI mode coming soon!";
     }
+
+    document.body.classList.add('visible');
 });

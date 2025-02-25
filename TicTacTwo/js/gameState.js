@@ -1,11 +1,20 @@
 export default class GameState {
     constructor() {
+        this.initialize();
+    }
+
+    initialize() {
         this.currentPlayer = "X";
         this.boardState = Array(25).fill(null);
         this.moveCount = 0;
         this.selectedMarker = null;
         this.gridPosition = {row: 1, col: 1};
         this.playableCells = new Set([6, 7, 8, 11, 12, 13, 16, 17, 18]);
+        this.winner = null;
+    }
+
+    reset() {
+        this.initialize();
     }
 
     switchPlayer() {

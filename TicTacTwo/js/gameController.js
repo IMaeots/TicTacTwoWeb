@@ -1,10 +1,49 @@
-export default class UIController {
+export default class GameController {
     constructor(gameState) {
         this.gameState = gameState;
         this.gameBoard = document.getElementById("gameBoard");
         this.gameHelper = document.getElementById("gameHelper");
+        this.resetButton = document.getElementById("reset");
+        
         this.setupControls();
+    }
+
+    setupControls() {
+        this.setupMovementControls();
+        this.setupResetControl();
+    }
+
+    setupMovementControls() {
+        document.getElementById('moveUp').addEventListener('click', () => this.moveGrid('up'));
+        document.getElementById('moveDown').addEventListener('click', () => this.moveGrid('down'));
+        document.getElementById('moveLeft').addEventListener('click', () => this.moveGrid('left'));
+        document.getElementById('moveRight').addEventListener('click', () => this.moveGrid('right'));
+    }
+
+    setupResetControl() {
+        this.resetButton.addEventListener('click', () => this.resetGame());
+    }
+
+    initializeGame() {
         this.createBoard();
+        this.updateHelperText(`${this.gameState.currentPlayer}'s Turn`);
+        document.querySelectorAll('.grid-control').forEach(control => control.disabled = true);
+    }
+
+    resetGame() {
+        this.gameState.reset();
+        this.initializeGame();
+        this.clearSelectedMarker();
+    }
+
+    updateHelperText(text) {
+        this.gameHelper.textContent = text;
+    }
+
+    endGame() {
+        this.disableBoard();
+        this.gameState.winner = this.gameState.currentPlayer;
+        this.updateHelperText(`🎉 ${this.gameState.currentPlayer} Wins Tic-Tac-Two! 🎉`);
     }
 
     createBoard() {
@@ -183,22 +222,5 @@ export default class UIController {
         document.querySelectorAll(".grid-control").forEach(control => {
             control.disabled = true;
         });
-    }
-
-    endGame() {
-        this.disableBoard();
-        this.gameState.winner = this.gameState.currentPlayer;
-        this.updateHelperText(`🎉 ${this.gameState.currentPlayer} Wins Tic-Tac-Two! 🎉`);
-    }
-
-    updateHelperText(text) {
-        this.gameHelper.textContent = text;
-    }
-
-    setupControls() {
-        document.getElementById('moveUp').addEventListener('click', () => this.moveGrid('up'));
-        document.getElementById('moveDown').addEventListener('click', () => this.moveGrid('down'));
-        document.getElementById('moveLeft').addEventListener('click', () => this.moveGrid('left'));
-        document.getElementById('moveRight').addEventListener('click', () => this.moveGrid('right'));
     }
 }

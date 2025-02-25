@@ -2,25 +2,28 @@ import GameState from './gameState.js';
 import GameController from './gameController.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    const localGameButton = document.getElementById("localGame");
-    const botGameButton = document.getElementById("botGame");
-    const gameContainer = document.querySelector(".game-container");
-    const resetButton = document.getElementById("reset");
-    const gameHelper = document.getElementById("gameHelper");
+    let localGameButton = document.getElementById("localGame");
+    let botGameButton = document.getElementById("botGame");
+    let gameContainer = document.querySelector(".game-container");
+    let resetButton = document.getElementById("reset");
+    let gameHelper = document.getElementById("gameHelper");
 
     setupMenuEnvironment();
 
     localGameButton.addEventListener('click', () => {
         setupLocalGameEnvironment();
 
-        const gameState = new GameState();
-        const gameController = new GameController(gameState);
+        let gameState = new GameState();
+        let gameController = new GameController(gameState);
         gameController.initializeGame();
     });
 
     botGameButton.addEventListener('click', () => {
         setupBotGameEnvironment();
-        setTimeout(setupMenuEnvironment, 2000);
+
+        let gameState = new GameState();
+        let gameController = new GameController(gameState, true);
+        gameController.initializeGame();
     });
 
     function setupMenuEnvironment() {
@@ -42,8 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function setupBotGameEnvironment() {
         localGameButton.style.display = 'none';
         botGameButton.style.display = 'none';
+        gameContainer.style.display = 'flex';
+        resetButton.style.display = 'block';
         gameHelper.style.display = 'block';
-        gameHelper.textContent = "AI mode coming soon!";
     }
 
     document.body.classList.add('visible');

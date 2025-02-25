@@ -1,10 +1,13 @@
+import { getAIMove } from './aiHelper.js';
+
 export default class GameController {
-    constructor(gameState) {
+    constructor(gameState, isAIGame = false) {
         this.gameState = gameState;
         this.gameBoard = document.getElementById("gameBoard");
         this.gameHelper = document.getElementById("gameHelper");
         this.resetButton = document.getElementById("reset");
         
+        this.isAIGame = isAIGame;
         this.setupControls();
     }
 
@@ -89,14 +92,15 @@ export default class GameController {
     }
 
     handleCellClick(event) {
-        if (this.gameState.winner) return;
+        if (this.gameState.winner || (this.isAIGame && this.gameState.currentPlayer === "O")) return;
 
         const cell = event.target;
         const index = parseInt(cell.getAttribute("data-index"));
 
         if (this.gameState.selectedMarker !== null) {
             if (this.gameState.boardState[index] === null && this.gameState.playableCells.has(index)) {
-                this.moveMarker(index);
+                this.moveMarker(this.gameState.selectedMarker, index);
+                this.gameState.selectedMarker = null;
                 return;
             }
         }
@@ -134,19 +138,18 @@ export default class GameController {
         this.updateHelperText(`${this.gameState.currentPlayer}, select a new position to move selected marker to.`);
     }
 
-    moveMarker(newIndex) {
-        const oldCell = this.gameBoard.children[this.gameState.selectedMarker];
-        const newCell = this.gameBoard.children[newIndex];
+    moveMarker(fromIndex, toIndex) {
+        const fromCell = this.gameBoard.children[fromIndex];
+        const toCell = this.gameBoard.children[toIndex];
 
-        this.gameState.boardState[newIndex] = this.gameState.currentPlayer;
-        this.gameState.boardState[this.gameState.selectedMarker] = null;
+        this.gameState.boardState[toIndex] = this.gameState.currentPlayer;
+        this.gameState.boardState[fromIndex] = null;
 
-        oldCell.textContent = "";
-        oldCell.classList.remove(this.gameState.currentPlayer, "selected");
-        newCell.textContent = this.gameState.currentPlayer;
-        newCell.classList.add(this.gameState.currentPlayer);
+        fromCell.textContent = "";
+        fromCell.classList.remove(this.gameState.currentPlayer);
+        toCell.textContent = this.gameState.currentPlayer;
+        toCell.classList.add(this.gameState.currentPlayer);
 
-        this.gameState.selectedMarker = null;
         this.handleMoveMade();
     }
 
@@ -203,15 +206,40 @@ export default class GameController {
         if (this.gameState.checkWin()) {
             this.endGame();
             return;
+        } else {
+            this.enableBoard()
         }
 
         this.gameState.switchPlayer();
         this.updateHelperText(`${this.gameState.currentPlayer}'s Turn`);
         this.updateBoard();
+
+        if (this.isAIGame && this.gameState.currentPlayer === "O") {
+            this.disableBoard();
+            setTimeout(() => this.makeAIMove(), 500);
+        }
     }
 
     enableGridControls() {
         document.querySelectorAll('.grid-control').forEach(control => control.disabled = false);
+    }
+
+    makeAIMove() {
+        const aiMove = getAIMove(this.gameState);
+        if (aiMove) {
+            switch (aiMove.type) {
+                case 'place':
+                    const cell = this.gameBoard.children[aiMove.index];
+                    this.placeMarker(aiMove.index, cell);
+                    break;
+                case 'move':
+                    this.moveMarker(aiMove.from, aiMove.to);
+                    break;
+                case 'grid':
+                    this.moveGrid(aiMove.direction);
+                    break;
+            }
+        }
     }
 
     disableBoard() {
@@ -221,6 +249,19 @@ export default class GameController {
         });
         document.querySelectorAll(".grid-control").forEach(control => {
             control.disabled = true;
+        });
+    }
+
+    enableBoard() {
+        document.querySelectorAll('.cell').forEach(cell => {
+            const index = parseInt(cell.getAttribute('data-index'));
+            if (this.gameState.playableCells.has(index)) {
+                cell.classList.add('playable');
+                cell.addEventListener('click', (e) => this.handleCellClick(e));
+            }
+        });
+        document.querySelectorAll('.grid-control').forEach(control => {
+            control.disabled = false;
         });
     }
 }

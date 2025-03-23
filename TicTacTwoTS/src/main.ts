@@ -1,24 +1,50 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import './styles/main.css'
+import GameState from './domain/models/GameState'
+import GameController from './domain/controllers/GameController.ts'
+import UIBuilder from './domain/utils/UIBuilder.ts'
+import { UIElements } from './domain/models/Interfaces.ts'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+document.addEventListener("DOMContentLoaded", () => {
+  const uiBuilder = new UIBuilder("app")
+  const ui = uiBuilder.createGameUI()
+  
+  setupGameEvents(ui)
+})
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+function setupGameEvents(ui: UIElements): void {
+  const { localGameButton, botGameButton } = ui
+
+  localGameButton.addEventListener('click', () => {
+    setupGameEnvironment(ui)
+
+    const gameState = new GameState()
+    const gameController = new GameController(gameState, ui, false)
+    gameController.initializeGame()
+  })
+
+  botGameButton.addEventListener('click', () => {
+    setupGameEnvironment(ui)
+
+    const gameState = new GameState()
+    const gameController = new GameController(gameState, ui, true)
+    gameController.initializeGame()
+  })
+}
+
+function setupGameEnvironment(ui: UIElements): void {
+  const {
+    gameHelper,
+    gameTimer,
+    localGameButton,
+    botGameButton,
+    resetButton,
+    gameContainer
+  } = ui
+  
+  localGameButton.style.display = 'none'
+  botGameButton.style.display = 'none'
+  gameContainer.style.display = 'flex'
+  resetButton.style.display = 'block'
+  gameHelper.style.display = 'block'
+  gameTimer.style.display = 'block'
+}

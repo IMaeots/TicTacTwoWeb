@@ -37,6 +37,7 @@ export default class GameState {
             })
         );
 
+        // TODO: Currently winning is only possible on your own move!
         return currentWinPatterns.some(pattern =>
             !pattern.includes(null) &&
             pattern.every(index => this.boardState[index] === this.currentPlayer)

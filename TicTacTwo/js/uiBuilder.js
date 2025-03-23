@@ -32,7 +32,7 @@ export default class UIBuilder {
 
     createHeading() {
         const heading = document.createElement("h1");
-        heading.textContent = "Basic TicTacTwo by IMaeots";
+        heading.textContent = "TicTacTwo with Vanilla Javascript by IMaeots";
         this.rootElement.appendChild(heading);
     }
 

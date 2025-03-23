@@ -4,13 +4,24 @@ body {
     margin-top: 24px;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f0f0f0;
 }
 
 body.visible {
     opacity: 1;
 }
 
+#app {
+    max-width: 1080px;
+    width: 100%;
+    text-align: center;
+}
+
 h1 {
+    color: #333;
     margin-bottom: 8px;
 }
 
@@ -19,25 +30,41 @@ h1 {
     margin-bottom: 24px;
 }
 
-#gameBoard {
-    display: grid;
-    grid-template-columns: repeat(5, 96px);
-    grid-template-rows: repeat(5, 96px);
-    gap: 8px;
-    justify-content: center;
-    margin: 24px auto;
+.game-timer {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    justify-self: center;
+    margin: 10px 0;
+    padding: 5px 10px;
+    width: fit-content;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 20px 0;
     gap: 8px;
+}
+
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(5, 96px);
+    grid-template-rows: repeat(5, 96px);
+    gap: 8px;
+    background-color: #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px;
+    justify-content: center;
 }
 
 .middle-layer {
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 8px;
 }
@@ -46,55 +73,66 @@ h1 {
     padding: 8px 16px;
     font-size: 24px;
     cursor: pointer;
-    background-color: #e0e0e0;
+    background-color: #34495e;
+    color: white;
     border: none;
     border-radius: 4px;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
 }
 
 .grid-control:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background-color: #7f8c8d;
 }
 
 .grid-control:not(:disabled):hover {
-    background-color: #d0d0d0;
+    background-color: #2c3e50;
 }
 
 .cell {
     width: 96px;
     height: 96px;
-    background-color: lightgray;
+    background-color: #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 4rem;
     font-weight: bold;
-    cursor: not-allowed;
+    cursor: default;
     border-radius: 8px;
 }
 
-.playable {
+.cell.playable {
     background-color: lightskyblue;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.playable:hover {
+.cell.playable:hover {
     background-color: lightblue;
 }
 
-.X {
-    color: red;
+.cell.X {
+    color: #e74c3c;
 }
 
-.O {
-    color: blue;
+.cell.O {
+    color: #3498db;
+}
+
+.cell.selected {
+    background-color: #f1c40f;
 }
 
 .menu-controls {
+    margin-top: 20px;
     display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin: 16px 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .menu-button {
@@ -106,7 +144,7 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    min-width: 160px;
+    min-width: 200px;
 }
 
 .menu-button:hover {
@@ -119,10 +157,37 @@ h1 {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.game-timer {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin: 10px 0;
-    padding: 5px;
+@media (max-width: 800px) {
+    #gameBoard {
+        grid-template-columns: repeat(5, 80px);
+        grid-template-rows: repeat(5, 80px);
+    }
+    .cell {
+        width: 80px;
+        height: 80px;
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 600px) {
+    #gameBoard {
+        grid-template-columns: repeat(5, 60px);
+        grid-template-rows: repeat(5, 60px);
+    }
+    .cell {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+    .grid-control {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        padding: 4px 8px;
+    }
+    .menu-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        min-width: 160px;
+    }
 }

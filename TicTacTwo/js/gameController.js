@@ -287,7 +287,7 @@ export default class GameController {
             }
         });
         document.querySelectorAll('.grid-control').forEach(control => {
-            control.disabled = false;
+            control.disabled = this.gameState.moveCount < 4
         });
     }
 }

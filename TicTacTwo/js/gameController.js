@@ -1,44 +1,32 @@
 import { getAIMove } from './aiHelper.js';
 
 export default class GameController {
-    constructor(gameState, isAIGame = false) {
+    constructor(gameState, ui, isAIGame = false) {
         this.gameState = gameState;
-        this.gameBoard = document.getElementById("gameBoard");
-        this.gameHelper = document.getElementById("gameHelper");
-        this.resetButton = document.getElementById("reset");
+        this.gameBoard = ui.gameBoard;
+        this.gameHelper = ui.gameHelper;
+        this.gameTimer = ui.gameTimer;
         
         this.isAIGame = isAIGame;
         this.timerInterval = null;
         this.gameTime = 0;
-        this.setupControls();
-        this.setupTimer();
+        this.setupControls(ui);
     }
 
-    setupControls() {
-        this.setupMovementControls();
-        this.setupResetControl();
+    setupControls(ui) {
+        this.setupMovementControls(ui);
+        this.setupResetControl(ui.resetButton);
     }
 
-    setupMovementControls() {
-        document.getElementById('moveUp').addEventListener('click', () => this.moveGrid('up'));
-        document.getElementById('moveDown').addEventListener('click', () => this.moveGrid('down'));
-        document.getElementById('moveLeft').addEventListener('click', () => this.moveGrid('left'));
-        document.getElementById('moveRight').addEventListener('click', () => this.moveGrid('right'));
+    setupMovementControls(ui) {
+        ui.moveUpButton.addEventListener('click', () => this.moveGrid('up'));
+        ui.moveDownButton.addEventListener('click', () => this.moveGrid('down'));
+        ui.moveLeftButton.addEventListener('click', () => this.moveGrid('left'));
+        ui.moveRightButton.addEventListener('click', () => this.moveGrid('right'));
     }
 
-    setupResetControl() {
-        this.resetButton.addEventListener('click', () => this.resetGame());
-    }
-
-    setupTimer() {
-        if (!document.getElementById('gameTimer')) {
-            const timerElement = document.createElement('div');
-            timerElement.id = 'gameTimer';
-            timerElement.classList.add('game-timer');
-            timerElement.textContent = '00:00';
-            this.gameHelper.parentNode.insertBefore(timerElement, this.gameHelper.nextSibling);
-        }
-        this.timerElement = document.getElementById('gameTimer');
+    setupResetControl(btn) {
+        btn.addEventListener('click', () => this.resetGame());
     }
 
     startTimer() {
@@ -60,7 +48,7 @@ export default class GameController {
     updateTimerDisplay() {
         const minutes = Math.floor(this.gameTime / 60).toString().padStart(2, '0');
         const seconds = (this.gameTime % 60).toString().padStart(2, '0');
-        this.timerElement.textContent = `${minutes}:${seconds}`;
+        this.gameTimer.textContent = `${minutes}:${seconds}`;
     }
 
     initializeGame() {

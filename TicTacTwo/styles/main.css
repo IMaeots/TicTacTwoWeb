@@ -35,7 +35,7 @@ h1 {
     gap: 8px;
 }
 
-.horizontal-controls {
+.middle-layer {
     display: flex;
     flex-direction: row;
     align-items: center;

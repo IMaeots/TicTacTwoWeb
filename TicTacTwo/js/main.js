@@ -1,54 +1,48 @@
 import GameState from './gameState.js';
 import GameController from './gameController.js';
+import UIBuilder from './uiBuilder.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    let localGameButton = document.getElementById("localGame");
-    let botGameButton = document.getElementById("botGame");
-    let gameContainer = document.querySelector(".game-container");
-    let resetButton = document.getElementById("reset");
-    let gameHelper = document.getElementById("gameHelper");
+    const uiBuilder = new UIBuilder("app");
+    const ui = uiBuilder.createGameUI();
+    
+    setupGameEvents(ui);
+});
 
-    setupMenuEnvironment();
+function setupGameEvents(ui) {
+    const { localGameButton, botGameButton } = ui;
 
     localGameButton.addEventListener('click', () => {
-        setupLocalGameEnvironment();
+        setupGameEnvironment(ui);
 
         let gameState = new GameState();
-        let gameController = new GameController(gameState);
+        let gameController = new GameController(gameState, ui, false);
         gameController.initializeGame();
     });
 
     botGameButton.addEventListener('click', () => {
-        setupBotGameEnvironment();
+        setupGameEnvironment(ui);
 
         let gameState = new GameState();
-        let gameController = new GameController(gameState, true);
+        let gameController = new GameController(gameState, ui, true);
         gameController.initializeGame();
     });
+}
 
-    function setupMenuEnvironment() {
-        gameHelper.style.display = 'none';
-        gameContainer.style.display = 'none';
-        resetButton.style.display = 'none';
-        localGameButton.style.display = 'block';
-        botGameButton.style.display = 'block';
-    }
-
-    function setupLocalGameEnvironment() {
-        localGameButton.style.display = 'none';
-        botGameButton.style.display = 'none';
-        gameContainer.style.display = 'flex';
-        resetButton.style.display = 'block';
-        gameHelper.style.display = 'block';
-    }
-
-    function setupBotGameEnvironment() {
-        localGameButton.style.display = 'none';
-        botGameButton.style.display = 'none';
-        gameContainer.style.display = 'flex';
-        resetButton.style.display = 'block';
-        gameHelper.style.display = 'block';
-    }
-
-    document.body.classList.add('visible');
-});
+function setupGameEnvironment(ui) {
+    const {
+        gameHelper,
+        gameTimer,
+        localGameButton,
+        botGameButton,
+        resetButton,
+        gameContainer
+    } = ui;
+    
+    localGameButton.style.display = 'none';
+    botGameButton.style.display = 'none';
+    gameContainer.style.display = 'flex';
+    resetButton.style.display = 'block';
+    gameHelper.style.display = 'block';
+    gameTimer.style.display = 'block';
+}

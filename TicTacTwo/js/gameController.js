@@ -8,7 +8,10 @@ export default class GameController {
         this.resetButton = document.getElementById("reset");
         
         this.isAIGame = isAIGame;
+        this.timerInterval = null;
+        this.gameTime = 0;
         this.setupControls();
+        this.setupTimer();
     }
 
     setupControls() {
@@ -27,9 +30,43 @@ export default class GameController {
         this.resetButton.addEventListener('click', () => this.resetGame());
     }
 
+    setupTimer() {
+        if (!document.getElementById('gameTimer')) {
+            const timerElement = document.createElement('div');
+            timerElement.id = 'gameTimer';
+            timerElement.classList.add('game-timer');
+            timerElement.textContent = '00:00';
+            this.gameHelper.parentNode.insertBefore(timerElement, this.gameHelper.nextSibling);
+        }
+        this.timerElement = document.getElementById('gameTimer');
+    }
+
+    startTimer() {
+        this.gameTime = 0;
+        this.updateTimerDisplay();
+        this.timerInterval = setInterval(() => {
+            this.gameTime++;
+            this.updateTimerDisplay();
+        }, 1000);
+    }
+
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+    }
+
+    updateTimerDisplay() {
+        const minutes = Math.floor(this.gameTime / 60).toString().padStart(2, '0');
+        const seconds = (this.gameTime % 60).toString().padStart(2, '0');
+        this.timerElement.textContent = `${minutes}:${seconds}`;
+    }
+
     initializeGame() {
         this.createBoard();
         this.updateHelperText(`${this.gameState.currentPlayer}'s Turn`);
+        this.startTimer();
         document.querySelectorAll('.grid-control').forEach(control => control.disabled = true);
     }
 
@@ -47,6 +84,7 @@ export default class GameController {
         this.disableBoard();
         this.gameState.winner = this.gameState.currentPlayer;
         this.updateHelperText(`🎉 ${this.gameState.currentPlayer} Wins Tic-Tac-Two! 🎉`);
+        this.stopTimer();
     }
 
     createBoard() {

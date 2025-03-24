@@ -101,10 +101,10 @@ function canWin(gameState, index, player) {
     let testBoard = [...boardState];
     testBoard[index] = player;
 
-    let baseWinPatterns = [
-        [6, 7, 8], [11, 12, 13], [16, 17, 18],
-        [6, 11, 16], [7, 12, 17], [8, 13, 18],
-        [6, 12, 18], [8, 12, 16]
+    const baseWinPatterns = [
+        [0, 1, 2], [5, 6, 7], [10, 11, 12],
+        [0, 5, 10], [1, 6, 11], [2, 7, 12],
+        [0, 6, 12], [2, 6, 10]
     ];
 
     let offset = gridPosition.row * 5 + gridPosition.col;

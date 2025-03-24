@@ -257,6 +257,7 @@ export default class GameController {
   }
 
   private handleMoveMade(): void {
+    this.clearSelectedMarker();
     if (this.gameState.checkWin()) {
       this.endGame();
       return;

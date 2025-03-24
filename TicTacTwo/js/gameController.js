@@ -229,6 +229,7 @@ export default class GameController {
     }
 
     handleMoveMade() {
+        this.clearSelectedMarker()
         if (this.gameState.checkWin()) {
             this.endGame();
             return;

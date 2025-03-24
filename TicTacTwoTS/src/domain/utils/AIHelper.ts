@@ -1,5 +1,5 @@
-import GameState from '../models/GameState.ts';
-import { AIMove, Direction, PlayerMark } from '../models/Interfaces.ts';
+import GameState from '../models/GameState';
+import { AIMove, Direction, PlayerMark } from '../models/Interfaces';
 
 export function getAIMove(gameState: GameState): AIMove | null {
   const opponent: PlayerMark = gameState.currentPlayer === "X" ? "O" : "X";

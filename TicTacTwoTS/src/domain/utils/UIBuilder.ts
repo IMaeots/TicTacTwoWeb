@@ -1,4 +1,4 @@
-import { UIElements } from '../models/Interfaces.ts';
+import { UIElements } from '../models/Interfaces';
 
 export default class UIBuilder {
   private rootElement: HTMLElement;

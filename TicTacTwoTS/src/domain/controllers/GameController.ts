@@ -1,6 +1,6 @@
-import GameState from '../models/GameState.ts';
-import { Direction, UIElements } from '../models/Interfaces.ts';
-import { getAIMove } from '../utils/AIHelper.ts';
+import GameState from '../models/GameState';
+import { Direction, UIElements } from '../models/Interfaces';
+import { getAIMove } from '../utils/AIHelper';
 
 export default class GameController {
   private readonly gameState: GameState;

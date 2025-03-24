@@ -1,8 +1,8 @@
 import './styles/main.css'
 import GameState from './domain/models/GameState'
-import GameController from './domain/controllers/GameController.ts'
-import UIBuilder from './domain/utils/UIBuilder.ts'
-import { UIElements } from './domain/models/Interfaces.ts'
+import GameController from './domain/controllers/GameController'
+import UIBuilder from './domain/utils/UIBuilder'
+import { UIElements } from './domain/models/Interfaces'
 
 document.addEventListener("DOMContentLoaded", () => {
   const uiBuilder = new UIBuilder("app")

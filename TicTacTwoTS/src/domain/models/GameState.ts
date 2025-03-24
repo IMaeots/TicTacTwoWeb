@@ -1,4 +1,4 @@
-import { GridPosition, PlayerMark } from './Interfaces.ts';
+import { GridPosition, PlayerMark } from './Interfaces';
 
 export default class GameState {
   public currentPlayer: PlayerMark;

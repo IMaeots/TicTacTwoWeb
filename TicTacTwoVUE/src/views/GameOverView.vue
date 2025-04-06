@@ -19,6 +19,10 @@ export default defineComponent({
       return store.winner ? `${store.winner} Wins` : `Draw!`
     })
 
+    const gameDuration = computed(() => {
+      return store.timerText
+    })
+
     const playAgain = () => {
       store.resetGame()
       router.push('/game')
@@ -31,6 +35,7 @@ export default defineComponent({
 
     return {
       gameResult,
+      gameDuration,
       playAgain,
       backToHome
     }
@@ -41,6 +46,7 @@ export default defineComponent({
 <template>
   <div class="game-over">
     <h1>Game Over! <span style="color: #e74c3c; font-weight: bold">{{ gameResult }}</span></h1>
+    <p class="game-duration">Game Duration: {{ gameDuration }}</p>
     <div class="winning-board">
       <GameBoard />
     </div>

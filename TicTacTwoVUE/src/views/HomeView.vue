@@ -27,9 +27,6 @@ export default defineComponent({
       startLocalGame,
       startBotGame
     }
-  },
-  mounted() {
-    document.body.classList.add('visible')
   }
 })
 </script>

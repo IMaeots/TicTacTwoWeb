@@ -1,4 +1,4 @@
-import { PlayerMark } from "@/domain/models/Enums.ts";
+import {GameResult, PlayerMark} from "@/domain/models/Enums.ts";
 
 export default class GameState {
   public currentPlayer!: PlayerMark;
@@ -7,7 +7,7 @@ export default class GameState {
   public selectedMarker!: number | null;
   public gridPosition!: GridPosition;
   public playableCells!: Set<number>;
-  public winner!: PlayerMark | null;
+  public winner!: GameResult | null;
 
   constructor() {
     this.reset();
@@ -27,7 +27,7 @@ export default class GameState {
     this.currentPlayer = this.currentPlayer === PlayerMark.X ? PlayerMark.O : PlayerMark.X;
   }
 
-  public checkAnyWin(): PlayerMark | null {
+  public checkAnyWin(): boolean {
     const baseWinPatterns: number[][] = [
       [6, 7, 8], [11, 12, 13], [16, 17, 18],
       [6, 11, 16], [7, 12, 17], [8, 13, 18],
@@ -35,6 +35,7 @@ export default class GameState {
     ];
 
     const offset = (this.gridPosition.row - 1) * 5 + (this.gridPosition.col - 1);
+    const winners = new Set<PlayerMark>();
 
     const currentWinPatterns = baseWinPatterns.map(pattern =>
         pattern.map(index => {
@@ -44,17 +45,25 @@ export default class GameState {
     );
 
     for (const pattern of currentWinPatterns) {
-      if (!pattern.includes(null)) {
-        const player = this.boardState[pattern[0]!];
+      if (pattern.includes(null)) continue;
 
-        if (pattern.every(index => index !== null && this.boardState[index] === player)) {
-          this.winner = player;
-          return player;
-        }
+      const [a, b, c] = pattern as number[];
+      const player = this.boardState[a];
+
+      if (player && this.boardState[b] === player && this.boardState[c] === player) {
+        winners.add(player);
       }
     }
 
-    return null;
+    if (winners.size === 1) {
+      this.winner = Array.from(winners)[0] === PlayerMark.X ? GameResult.X : GameResult.O;
+      return true;
+    } else if (winners.size > 1) {
+      this.winner = GameResult.Draw;
+      return true;
+    }
+
+    return false;
   }
 
 

@@ -21,7 +21,7 @@ export default class GameState {
         this.currentPlayer = this.currentPlayer === "X" ? "O" : "X";
     }
 
-    checkWin() {
+    checkAnyWin() {
         const baseWinPatterns = [
             [6, 7, 8], [11, 12, 13], [16, 17, 18],
             [6, 11, 16], [7, 12, 17], [8, 13, 18],
@@ -29,6 +29,7 @@ export default class GameState {
         ];
 
         const offset = (this.gridPosition.row - 1) * 5 + (this.gridPosition.col - 1);
+        const winners = new Set();
 
         const currentWinPatterns = baseWinPatterns.map(pattern =>
             pattern.map(index => {
@@ -37,11 +38,26 @@ export default class GameState {
             })
         );
 
-        // TODO: Currently winning is only possible on your own move!
-        return currentWinPatterns.some(pattern =>
-            !pattern.includes(null) &&
-            pattern.every(index => this.boardState[index] === this.currentPlayer)
-        );
+        for (const pattern of currentWinPatterns) {
+            if (pattern.includes(null)) continue;
+
+            const [a, b, c] = pattern;
+            const player = this.boardState[a];
+
+            if (player && this.boardState[b] === player && this.boardState[c] === player) {
+                winners.add(player);
+            }
+        }
+
+        if (winners.size > 1) {
+            this.winner = "Draw";
+            return true;
+        } else if (winners.size === 1) {
+            this.winner = Array.from(winners)[0];
+            return true;
+        }
+
+        return false;
     }
 
     updatePlayableCells() {

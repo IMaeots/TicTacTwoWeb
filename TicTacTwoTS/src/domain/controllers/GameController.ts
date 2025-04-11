@@ -1,5 +1,5 @@
 import GameState from '../models/GameState';
-import { Direction, UIElements } from '../models/Interfaces';
+import { Direction, UIElements, GameResult } from '../models/Interfaces';
 import { getAIMove } from '../utils/AIHelper';
 
 export default class GameController {
@@ -86,8 +86,9 @@ export default class GameController {
 
   private endGame(): void {
     this.disableBoard();
-    this.gameState.winner = this.gameState.currentPlayer;
-    this.updateHelperText(`🎉 ${this.gameState.currentPlayer} Wins Tic-Tac-Two! 🎉`);
+    this.updateHelperText(this.gameState.winner === GameResult.Draw ? 
+        "🤝 It's a Draw! 🤝" : 
+        `🎉 ${this.gameState.winner} Wins Tic-Tac-Two! 🎉`);
     this.stopTimer();
   }
 
@@ -258,7 +259,7 @@ export default class GameController {
 
   private handleMoveMade(): void {
     this.clearSelectedMarker();
-    if (this.gameState.checkWin()) {
+    if (this.gameState.checkAnyWin()) {
       this.endGame();
       return;
     } else {

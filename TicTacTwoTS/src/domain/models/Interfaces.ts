@@ -17,8 +17,18 @@ export interface UIElements {
   resetButton: HTMLButtonElement;
 }
 
-export type PlayerMark = 'X' | 'O';
 export type Direction = 'up' | 'down' | 'left' | 'right';
+
+export enum PlayerMark {
+  X = 'X',
+  O = 'O'
+}
+
+export enum GameResult {
+  X = 'X',
+  O = 'O',
+  Draw = 'Draw'
+}
 
 export interface AIMove {
   type: 'place' | 'move' | 'grid';

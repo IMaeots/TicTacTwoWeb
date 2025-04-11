@@ -2,7 +2,7 @@ import GameState from '../models/GameState';
 import { AIMove, Direction, PlayerMark } from '../models/Interfaces';
 
 export function getAIMove(gameState: GameState): AIMove | null {
-  const opponent: PlayerMark = gameState.currentPlayer === "X" ? "O" : "X";
+  const opponent: PlayerMark = gameState.currentPlayer === PlayerMark.X ? PlayerMark.O : PlayerMark.X;
 
   const winningMove = findWinningMove(gameState, gameState.currentPlayer);
   if (winningMove !== null) {

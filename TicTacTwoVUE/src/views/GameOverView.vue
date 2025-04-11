@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useGameStore } from '@/domain/stores/gameStore'
 import GameMenu from '@/components/GameMenu.vue'
 import GameBoard from "@/components/GameBoard.vue";
+import { GameResult } from "@/domain/models/Enums.ts";
 
 export default defineComponent({
   name: 'GameOverView',
@@ -16,7 +17,9 @@ export default defineComponent({
     const store = useGameStore()
 
     const gameResult = computed(() => {
-      return store.winner ? `${store.winner} Wins` : `Draw!`
+      return store.winner === GameResult.Draw ?
+          `🤝 It's a Draw! 🤝` :
+          `${store.winner} Wins!`;
     })
 
     const gameDuration = computed(() => {

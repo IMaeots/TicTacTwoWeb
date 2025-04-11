@@ -15,12 +15,12 @@ export default class UIBuilder {
     this.createHeading();
     const gameHelper = this.createGameHelper();
     const gameTimer = this.createTimer();
-    const { 
-      gameContainer, 
-      moveUpButton, 
-      moveDownButton, 
-      moveLeftButton, 
-      moveRightButton, 
+    const {
+      gameContainer,
+      moveUpButton,
+      moveDownButton,
+      moveLeftButton,
+      moveRightButton,
       gameBoard 
     } = this.createGameContainer();
     
@@ -135,14 +135,11 @@ export default class UIBuilder {
     const menuControls = document.createElement("div");
     menuControls.className = "menu-controls";
     this.rootElement.appendChild(menuControls);
-    
-    // Add local game button
+
     const localGameButton = this.addMenuButton(menuControls, "localGame", "Local Two Player");
-    
-    // Add bot game button
+
     const botGameButton = this.addMenuButton(menuControls, "botGame", "VS Computer");
-    
-    // Add reset button (initially hidden)
+
     const resetButton = this.addMenuButton(menuControls, "reset", "Reset Game");
     resetButton.style.display = 'none';
     

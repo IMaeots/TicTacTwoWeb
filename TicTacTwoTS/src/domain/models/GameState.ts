@@ -1,4 +1,4 @@
-import { GridPosition, PlayerMark } from './Interfaces';
+import {GameResult, GridPosition, PlayerMark} from './Interfaces';
 
 export default class GameState {
   public currentPlayer: PlayerMark;
@@ -7,10 +7,10 @@ export default class GameState {
   public selectedMarker: number | null;
   public gridPosition: GridPosition;
   public playableCells: Set<number>;
-  public winner: PlayerMark | null;
+  public winner: GameResult | null;
 
   constructor() {
-    this.currentPlayer = "X";
+    this.currentPlayer = PlayerMark.X;
     this.boardState = Array(25).fill(null);
     this.moveCount = 0;
     this.selectedMarker = null;
@@ -20,7 +20,7 @@ export default class GameState {
   }
 
   public reset(): void {
-    this.currentPlayer = "X";
+    this.currentPlayer = PlayerMark.X;
     this.boardState = Array(25).fill(null);
     this.moveCount = 0;
     this.selectedMarker = null;
@@ -30,10 +30,10 @@ export default class GameState {
   }
 
   public switchPlayer(): void {
-    this.currentPlayer = this.currentPlayer === "X" ? "O" : "X";
+    this.currentPlayer = this.currentPlayer === PlayerMark.X ? PlayerMark.O : PlayerMark.X;
   }
 
-  public checkWin(): boolean {
+  public checkAnyWin(): boolean {
     const baseWinPatterns: number[][] = [
       [6, 7, 8], [11, 12, 13], [16, 17, 18],
       [6, 11, 16], [7, 12, 17], [8, 13, 18],
@@ -41,6 +41,7 @@ export default class GameState {
     ];
 
     const offset = (this.gridPosition.row - 1) * 5 + (this.gridPosition.col - 1);
+    const winners = new Set<PlayerMark>();
 
     const currentWinPatterns = baseWinPatterns.map(pattern =>
       pattern.map(index => {
@@ -49,11 +50,26 @@ export default class GameState {
       })
     );
 
-    // TODO: Currently can win on only own move.
-    return currentWinPatterns.some(pattern =>
-      !pattern.includes(null) &&
-      pattern.every(index => index !== null && this.boardState[index] === this.currentPlayer)
-    );
+    for (const pattern of currentWinPatterns) {
+      if (pattern.includes(null)) continue;
+
+      const [a, b, c] = pattern as number[];
+      const player = this.boardState[a];
+
+      if (player && this.boardState[b] === player && this.boardState[c] === player) {
+        winners.add(player);
+      }
+    }
+
+    if (winners.size === 1) {
+      this.winner = Array.from(winners)[0] === PlayerMark.X ? GameResult.X : GameResult.O;
+      return true;
+    } else if (winners.size > 1) {
+      this.winner = GameResult.Draw;
+      return true;
+    }
+
+    return false;
   }
 
   public updatePlayableCells(): void {

@@ -15,3 +15,9 @@ export enum MoveType {
     Move = 'move',
     Grid = 'grid'
 }
+
+export enum GameResult {
+    X = 'X',
+    O = 'O',
+    Draw = 'Draw'
+}

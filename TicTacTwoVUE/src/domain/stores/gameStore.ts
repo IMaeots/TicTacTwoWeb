@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import GameState from '@/domain/models/GameState.ts';
-import { Direction, MoveType, PlayerMark } from "@/domain/models/Enums.ts";
+import { Direction, MoveType, PlayerMark, GameResult } from "@/domain/models/Enums.ts";
 import { getAIMove } from '@/domain/utils/AIHelper.ts';
 
 export const useGameStore = defineStore('game', {
@@ -21,7 +21,9 @@ export const useGameStore = defineStore('game', {
         winner: (state) => state.gameState.winner,
         gameHelperText: (state) => {
             if (state.gameState.winner) {
-                return `${state.gameState.winner} Wins!`;
+                return state.gameState.winner === GameResult.Draw ?
+                    "🤝 It's a Draw! 🤝" : 
+                    `${state.gameState.winner} Wins!`;
             }
             return `${state.gameState.currentPlayer}'s Turn`;
         }
@@ -175,7 +177,7 @@ export const useGameStore = defineStore('game', {
 
         async moveMade(): Promise<void> {
             this.gameState.moveCount++;
-            if (this.gameState.checkAnyWin() !== null) {
+            if (this.gameState.checkAnyWin()) {
                 if (this.timerInterval) {
                     clearInterval(this.timerInterval);
                 }

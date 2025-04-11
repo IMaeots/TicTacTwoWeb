@@ -70,8 +70,9 @@ export default class GameController {
 
     endGame() {
         this.disableBoard();
-        this.gameState.winner = this.gameState.currentPlayer;
-        this.updateHelperText(`🎉 ${this.gameState.currentPlayer} Wins Tic-Tac-Two! 🎉`);
+        this.updateHelperText(this.gameState.winner === "Draw" ?
+            "🤝 It's a Draw! 🤝" : 
+            `🎉 ${this.gameState.winner} Wins Tic-Tac-Two! 🎉`);
         this.stopTimer();
     }
 
@@ -230,7 +231,7 @@ export default class GameController {
 
     handleMoveMade() {
         this.clearSelectedMarker()
-        if (this.gameState.checkWin()) {
+        if (this.gameState.checkAnyWin()) {
             this.endGame();
             return;
         } else {

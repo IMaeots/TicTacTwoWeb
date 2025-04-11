@@ -70,6 +70,8 @@ export const useGameStore = defineStore('game', {
         },
 
         canMoveGrid(direction: Direction): boolean {
+            if (this.gameState.moveCount < 4) return false;
+
             const { gridPosition } = this.gameState;
             switch (direction) {
                 case Direction.Up: return gridPosition.row > 0;

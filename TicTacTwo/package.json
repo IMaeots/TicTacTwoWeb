@@ -1,6 +1,20 @@
 {
-  "name": "TicTacTwo",
+  "name": "tictactwo",
   "version": "1.0.0",
+  "description": "A creative twist on the classic Tic-Tac-Toe game implemented with vanilla JavaScript",
+  "main": "js/main.js",
+  "author": "IMaeots",
+  "license": "ARR",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IMaeots/tictactwojs"
+  },
+  "keywords": [
+    "game",
+    "tic-tac-toe",
+    "vanilla-js",
+    "browser-game"
+  ],
   "dependencies": {
   }
 }

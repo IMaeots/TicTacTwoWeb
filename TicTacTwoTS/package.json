@@ -3,6 +3,20 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "A creative twist on the classic Tic-Tac-Toe game implemented with TypeScript",
+  "author": "IMaeots",
+  "license": "ARR",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IMaeots/tictactwots"
+  },
+  "keywords": [
+    "game",
+    "tic-tac-toe",
+    "typescript",
+    "vite",
+    "browser-game"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

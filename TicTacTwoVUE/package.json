@@ -1,8 +1,23 @@
 {
   "name": "tictactwovue",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
+  "description": "A creative twist on the classic Tic-Tac-Toe game implemented with Vue 3 and TypeScript",
+  "author": "IMaeots",
+  "license": "ARR",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IMaeots/tictactwovue"
+  },
+  "keywords": [
+    "game",
+    "tic-tac-toe",
+    "vue",
+    "typescript",
+    "pinia",
+    "browser-game"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",

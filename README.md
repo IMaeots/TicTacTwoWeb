@@ -61,6 +61,11 @@ TicTacTwo is an advanced version of **Tic-Tac-Toe** with a unique twist:
 
 - Any modern web browser (Chrome, Firefox, Safari, or Edge).
 
+#### 🌟  To Run Them Without Installation
+
+- These are all easily accessible via this link: https://enos.itcollege.ee/~inmaeo/ (at least in 2025)
+- There, you have options for all 3 versions of the same TicTacTwo game - select one of the folders and play!
+
 #### Installation
 
 Clone this repository:

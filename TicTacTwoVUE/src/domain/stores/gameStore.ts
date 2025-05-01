@@ -134,7 +134,6 @@ export const useGameStore = defineStore('game', {
                 if (boardState[index] === null) {
                     boardState[index] = currentPlayer;
                     boardState[selectedMarker] = null;
-                    this.gameState.selectedMarker = null;
                     await this.moveMade();
                 } else {
                     this.gameState.selectedMarker = null;
@@ -179,6 +178,7 @@ export const useGameStore = defineStore('game', {
 
         async moveMade(): Promise<void> {
             this.gameState.moveCount++;
+            this.gameState.selectedMarker = null;
             if (this.gameState.checkAnyWin()) {
                 if (this.timerInterval) {
                     clearInterval(this.timerInterval);

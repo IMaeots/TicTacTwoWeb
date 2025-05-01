@@ -8,6 +8,8 @@ export default class GameState {
   public gridPosition: GridPosition;
   public playableCells: Set<number>;
   public winner: GameResult | null;
+  public markersPerPlayer: number;
+  public numberOfTotalMovesForSpecials: number;
 
   constructor() {
     this.currentPlayer = PlayerMark.X;
@@ -17,6 +19,8 @@ export default class GameState {
     this.gridPosition = {row: 1, col: 1};
     this.playableCells = new Set([6, 7, 8, 11, 12, 13, 16, 17, 18]);
     this.winner = null;
+    this.markersPerPlayer = 6;
+    this.numberOfTotalMovesForSpecials = 6;
   }
 
   public reset(): void {

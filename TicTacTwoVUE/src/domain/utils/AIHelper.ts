@@ -90,6 +90,8 @@ function getReMove(gameState: GameState): { from: number; to: number } | null {
 }
 
 function canMoveGrid(gameState: GameState, direction: Direction): boolean {
+  if (gameState.moveCount < gameState.numberOfTotalMovesForSpecials) return false;
+  
   const { gridPosition } = gameState;
   switch (direction) {
     case Direction.Up: return gridPosition.row > 0;
@@ -97,6 +99,7 @@ function canMoveGrid(gameState: GameState, direction: Direction): boolean {
     case Direction.Left: return gridPosition.col > 0;
     case Direction.Right: return gridPosition.col < 2;
   }
+  return false;
 }
 
 function canWin(gameState: GameState, index: number, player: PlayerMark): boolean {

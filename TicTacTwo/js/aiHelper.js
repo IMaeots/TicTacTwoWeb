@@ -86,14 +86,16 @@ function getReMove(gameState) {
 }
 
 function canMoveGrid(gameState, direction) {
-    let { gridPosition } = gameState;
+    if (gameState.moveCount < gameState.numberOfTotalMovesForSpecials) return false;
+    
+    const { gridPosition } = gameState;
     switch (direction) {
         case 'up': return gridPosition.row > 0;
         case 'down': return gridPosition.row < 2;
         case 'left': return gridPosition.col > 0;
         case 'right': return gridPosition.col < 2;
-        default: return false;
     }
+    return false;
 }
 
 function canWin(gameState, index, player) {

@@ -25,7 +25,7 @@ TicTacTwo is a creative twist on the classic **Tic-Tac-Toe** game. The game is p
 
 3. **TicTacTwoVUE** - Vue.js
    - Location: `/TicTacTwoVUE`
-   - A **Vue.js** implementation, utilizing the power of Vue's component-based architecture to organize the game’s features.
+   - A **Vue.js** implementation, utilizing the power of Vue's component-based architecture to organize the game's features.
 
 ---
 
@@ -34,8 +34,9 @@ TicTacTwo is a creative twist on the classic **Tic-Tac-Toe** game. The game is p
 TicTacTwo is an advanced version of **Tic-Tac-Toe** with a unique twist:
 
 - The game is played on a **5×5 grid**, but only a **3×3 section** is active at any time.
-- After a few initial moves, players can either place new markers or move existing ones.
-- Players can also **shift the active playing area**.
+- After 6 total moves, players can either place new markers or move existing ones.
+- Players can also **shift the active playing area** after 6 total moves.
+- Each player has a maximum of 6 markers in total.
 - You can play **locally** with a friend or against the **AI**.
 
 ---
@@ -73,3 +74,15 @@ Clone this repository:
 ```bash
 git clone <repository-url>
 cd TicTacTwoWeb
+```
+
+## 📝 License
+
+All Rights Reserved
+
+## Author
+
+Name: Indrek Mäeots
+School email: inmaeo@taltech.ee
+
+Disclaimer: of course it is not perfect

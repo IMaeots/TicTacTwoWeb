@@ -11,6 +11,8 @@ export default class GameState {
         this.gridPosition = {row: 1, col: 1};
         this.playableCells = new Set([6, 7, 8, 11, 12, 13, 16, 17, 18]);
         this.winner = null;
+        this.numberOfTotalMovesForSpecials = 6;
+        this.markersPerPlayer = 6;
     }
 
     reset() {

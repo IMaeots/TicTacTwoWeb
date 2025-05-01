@@ -5,7 +5,7 @@ A creative twist on the classic Tic-Tac-Toe game implemented with TypeScript, HT
 
 ## 🎮 Game Description
 
-TicTacTwo is an advanced version of Tic-Tac-Toe with a unique twist: the game is played on a 5×5 grid, but only a 3×3 section is active at any time. After the first few moves, players can either place new markers or move their existing ones, and even shift the active playing area!
+TicTacTwo is an advanced version of Tic-Tac-Toe with a unique twist: the game is played on a 5×5 grid, but only a 3×3 section is active at any time. After the first 6 total moves, players can either place new markers or move their existing ones, and even shift the active playing area! There are 6 markers per player.
 
 ### Features
 
@@ -63,10 +63,10 @@ The compiled files will be available in the `dist` directory.
    - Choose "Play Local Game" to play against a friend
    - Choose "Play Against AI" to play against the computer
 
-2. **First Phase (First 4 Moves)**:
+2. **First Phase (First 6 Moves)**:
    - Players take turns placing their markers (X or O) in the available cells
 
-3. **Second Phase (After 4 Moves)**:
+3. **Second Phase (After 6 Moves)**:
    - Players can either:
      - Place a new marker in an empty cell
      - Select one of their existing markers and move it to an empty cell

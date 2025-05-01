@@ -8,6 +8,8 @@ export default class GameState {
   public gridPosition!: GridPosition;
   public playableCells!: Set<number>;
   public winner!: GameResult | null;
+  public markersPerPlayer: number = 6;
+  public numberOfTotalMovesForSpecials: number = 6;
 
   constructor() {
     this.reset();

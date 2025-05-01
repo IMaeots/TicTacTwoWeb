@@ -132,14 +132,22 @@ export default class GameController {
             }
         }
 
-        if (this.gameState.moveCount >= 4 && this.gameState.boardState[index] === this.gameState.currentPlayer) {
+        if (this.gameState.moveCount >= this.gameState.numberOfTotalMovesForSpecials && this.gameState.boardState[index] === this.gameState.currentPlayer) {
             this.selectMarker(index, cell);
             return;
         }
 
         if (this.gameState.boardState[index] === null && this.gameState.playableCells.has(index)) {
+            if (this.countPlayerMarkers(this.gameState.currentPlayer) >= this.gameState.markersPerPlayer) {
+                this.updateHelperText(`Maximum ${this.gameState.markersPerPlayer} markers reached! Move an existing marker or the grid.`);
+                return;
+            }
             this.placeMarker(index, cell);
         }
+    }
+
+    countPlayerMarkers(player) {
+        return this.gameState.boardState.filter(cell => cell === player).length;
     }
 
     placeMarker(index, cell) {
@@ -148,7 +156,7 @@ export default class GameController {
         cell.classList.add(this.gameState.currentPlayer);
         this.gameState.moveCount++;
 
-        if (this.gameState.moveCount === 4) {
+        if (this.gameState.moveCount === this.gameState.numberOfTotalMovesForSpecials) {
             this.enableGridControls();
         }
 
@@ -289,7 +297,7 @@ export default class GameController {
             }
         });
         document.querySelectorAll('.grid-control').forEach(control => {
-            control.disabled = this.gameState.moveCount < 4
+            control.disabled = this.gameState.moveCount < this.gameState.numberOfTotalMovesForSpecials;
         });
     }
 }

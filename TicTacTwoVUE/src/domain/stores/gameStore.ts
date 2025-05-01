@@ -69,8 +69,12 @@ export const useGameStore = defineStore('game', {
             return this.gameState.playableCells.has(index);
         },
 
+        countPlayerMarkers(player: PlayerMark): number {
+            return this.gameState.boardState.filter(cell => cell === player).length;
+        },
+
         canMoveGrid(direction: Direction): boolean {
-            if (this.gameState.moveCount < 4) return false;
+            if (this.gameState.moveCount < this.gameState.numberOfTotalMovesForSpecials) return false;
 
             const { gridPosition } = this.gameState;
             switch (direction) {
@@ -121,13 +125,16 @@ export const useGameStore = defineStore('game', {
         async handleCellClick(index: number): Promise<void> {
             if (!this.isPlayableCell(index)) return;
             
-            const { boardState, selectedMarker, currentPlayer } = this.gameState;
+            const { boardState, selectedMarker, currentPlayer, moveCount, numberOfTotalMovesForSpecials } = this.gameState;
             
             if (selectedMarker === null) {
                 if (boardState[index] === null) {
+                    if (this.countPlayerMarkers(currentPlayer) >= this.gameState.markersPerPlayer) {
+                        return;
+                    }
                     boardState[index] = currentPlayer;
                     await this.moveMade()
-                } else if (boardState[index] === currentPlayer) {
+                } else if (boardState[index] === currentPlayer && moveCount >= numberOfTotalMovesForSpecials) {
                     this.gameState.selectedMarker = index;
                 }
             } else {

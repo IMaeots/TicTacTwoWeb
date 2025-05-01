@@ -1,33 +1,24 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/domain/stores/gameStore'
 import GameMenu from '@/components/GameMenu.vue'
 
-export default defineComponent({
-  name: 'HomeView',
-  components: {
-    GameMenu
-  },
-  setup() {
-    const router = useRouter()
-    const store = useGameStore()
+const router = useRouter()
+const store = useGameStore()
 
-    const startLocalGame = () => {
-      store.startLocalGame()
-      router.push('/game')
-    }
+const startLocalGame = () => {
+  store.startLocalGame()
+  router.push('/game')
+}
 
-    const startBotGame = () => {
-      store.startBotGame()
-      router.push('/game')
-    }
+const startBotGame = () => {
+  store.startBotGame()
+  router.push('/game')
+}
 
-    return {
-      startLocalGame,
-      startBotGame
-    }
-  }
+defineExpose({
+  startLocalGame,
+  startBotGame
 })
 </script>
 

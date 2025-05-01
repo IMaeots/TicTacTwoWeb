@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import GameState from '@/domain/models/GameState.ts';
-import { Direction, MoveType, PlayerMark, GameResult } from "@/domain/models/Enums.ts";
-import { getAIMove } from '@/domain/utils/AIHelper.ts';
+import GameState from '@/domain/models/GameState';
+import { Direction, MoveType, PlayerMark, GameResult } from '@/domain/models/Enums';
+import { getAIMove } from '@/domain/utils/AIHelper';
 
 export const useGameStore = defineStore('game', {
     state: () => ({

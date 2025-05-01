@@ -1,48 +1,39 @@
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/domain/stores/gameStore'
 import GameMenu from '@/components/GameMenu.vue'
-import GameBoard from "@/components/GameBoard.vue";
-import { GameResult } from "@/domain/models/Enums.ts";
+import GameBoard from '@/components/GameBoard.vue'
+import { GameResult } from '@/domain/models/Enums'
 
-export default defineComponent({
-  name: 'GameOverView',
-  components: {
-    GameBoard,
-    GameMenu
-  },
-  setup() {
-    const router = useRouter()
-    const store = useGameStore()
+const router = useRouter()
+const store = useGameStore()
 
-    const gameResult = computed(() => {
-      return store.winner === GameResult.Draw ?
-          `🤝 It's a Draw! 🤝` :
-          `${store.winner} Wins!`;
-    })
+const gameResult = computed(() => {
+  return store.winner === GameResult.Draw ?
+      `🤝 It's a Draw! 🤝` :
+      `${store.winner} Wins!`
+})
 
-    const gameDuration = computed(() => {
-      return store.timerText
-    })
+const gameDuration = computed(() => {
+  return store.timerText
+})
 
-    const playAgain = () => {
-      store.resetGame()
-      router.push('/game')
-    }
+const playAgain = () => {
+  store.resetGame()
+  router.push('/game')
+}
 
-    const backToHome = () => {
-      store.$reset()
-      router.push('/')
-    }
+const backToHome = () => {
+  store.$reset()
+  router.push('/')
+}
 
-    return {
-      gameResult,
-      gameDuration,
-      playAgain,
-      backToHome
-    }
-  }
+defineExpose({
+  gameResult,
+  gameDuration,
+  playAgain,
+  backToHome
 })
 </script>
 

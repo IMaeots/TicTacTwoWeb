@@ -1,31 +1,21 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useGameStore } from '@/domain/stores/gameStore'
 import { useRouter } from 'vue-router'
 import { watch } from 'vue'
 import GameBoard from '@/components/GameBoard.vue'
 import GameMenu from '@/components/GameMenu.vue'
 
-export default defineComponent({
-  name: 'GameView',
-  components: {
-    GameBoard,
-    GameMenu
-  },
-  setup() {
-    const store = useGameStore()
-    const router = useRouter()
+const store = useGameStore()
+const router = useRouter()
 
-    watch(() => store.winner, (newValue) => {
-      if (newValue) {
-        router.push('/game-over')
-      }
-    })
-
-    return {
-      store
-    }
+watch(() => store.winner, (newValue) => {
+  if (newValue) {
+    router.push('/game-over')
   }
+})
+
+defineExpose({
+  store
 })
 </script>
 

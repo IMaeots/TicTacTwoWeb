@@ -1,5 +1,5 @@
 import GameState from '@/domain/models/GameState';
-import { Direction, MoveType, PlayerMark } from '@/domain/models/Enums.ts';
+import { Direction, MoveType, PlayerMark } from '@/domain/models/Enums';
 
 export function getAIMove(gameState: GameState): AIMove | null {
   const opponent: PlayerMark = gameState.currentPlayer === PlayerMark.X ? PlayerMark.O : PlayerMark.X;

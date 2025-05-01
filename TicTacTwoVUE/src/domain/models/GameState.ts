@@ -1,4 +1,4 @@
-import {GameResult, PlayerMark} from "@/domain/models/Enums.ts";
+import { GameResult, PlayerMark } from "@/domain/models/Enums";
 
 export default class GameState {
   public currentPlayer!: PlayerMark;

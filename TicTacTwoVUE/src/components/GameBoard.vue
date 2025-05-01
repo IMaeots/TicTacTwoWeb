@@ -1,26 +1,12 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useGameStore } from '@/domain/stores/gameStore'
-import { Direction } from "@/domain/models/Enums.ts";
+import { Direction } from '@/domain/models/Enums'
 
-export default defineComponent({
-  name: 'GameBoard',
-  computed: {
-    Direction() {
-      return Direction
-    }
-  },
-  setup() {
-    const store = useGameStore()
+const store = useGameStore()
 
-    return {
-      store,
-      isPlayableCell: store.isPlayableCell,
-      canMoveGrid: store.canMoveGrid,
-      moveGrid: store.moveGrid,
-      handleCellClick: store.handleCellClick
-    }
-  }
+defineExpose({
+  store,
+  Direction
 })
 </script>
 

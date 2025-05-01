@@ -1,19 +1,21 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+const props = defineProps<{
+  isGameSessionActive: boolean
+  isGameOver?: boolean
+}>()
 
-export default defineComponent({
-  name: 'GameMenu',
-  props: {
-    isGameSessionActive: {
-      type: Boolean,
-      required: true
-    },
-    isGameOver: {
-      type: Boolean,
-      default: false
-    },
-  },
-  emits: ['start-local', 'start-bot', 'reset', 'play-again', 'back-to-home']
+const emit = defineEmits<{
+  (e: 'start-local'): void
+  (e: 'start-bot'): void
+  (e: 'reset'): void
+  (e: 'play-again'): void
+  (e: 'back-to-home'): void
+}>()
+
+defineExpose({
+  isGameSessionActive: props.isGameSessionActive,
+  isGameOver: props.isGameOver,
+  $emit: emit
 })
 </script>
 

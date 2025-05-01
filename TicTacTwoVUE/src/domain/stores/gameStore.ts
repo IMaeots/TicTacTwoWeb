@@ -142,15 +142,17 @@ export const useGameStore = defineStore('game', {
         },
 
         async makeBotMove(): Promise<void> {
-            if (!this.isVsBot || this.isBotThinking) return;
+            if (!this.isVsBot || this.isBotThinking || this.gameState.winner) return;
             
-            if (this.gameState.currentPlayer === PlayerMark.O && !this.gameState.winner) {
+            if (this.gameState.currentPlayer === PlayerMark.O) {
                 this.isBotThinking = true;
                 
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                const move = getAIMove(this.gameState);
-                if (move) {
+                try {
+                    await this.delay(500);
+                    
+                    const move = getAIMove(this.gameState);
+                    if (!move) return;
+                    
                     switch (move.type) {
                         case MoveType.Place:
                             if (move.index !== undefined) {
@@ -160,7 +162,7 @@ export const useGameStore = defineStore('game', {
                         case MoveType.Move:
                             if (move.from !== undefined && move.to !== undefined) {
                                 await this.handleCellClick(move.from);
-                                await new Promise(resolve => setTimeout(resolve, 300));
+                                await this.delay(300);
                                 await this.handleCellClick(move.to);
                             }
                             break;
@@ -170,10 +172,14 @@ export const useGameStore = defineStore('game', {
                             }
                             break;
                     }
+                } finally {
+                    this.isBotThinking = false;
                 }
-                
-                this.isBotThinking = false;
             }
+        },
+
+        delay(ms: number): Promise<void> {
+            return new Promise(resolve => setTimeout(resolve, ms));
         },
 
         async moveMade(): Promise<void> {

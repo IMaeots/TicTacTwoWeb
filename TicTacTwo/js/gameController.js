@@ -262,19 +262,27 @@ export default class GameController {
 
     makeAIMove() {
         const aiMove = getAIMove(this.gameState);
-        if (aiMove) {
-            switch (aiMove.type) {
-                case 'place':
-                    const cell = this.gameBoard.children[aiMove.index];
-                    this.placeMarker(aiMove.index, cell);
-                    break;
-                case 'move':
+        if (!aiMove) return;
+
+        switch (aiMove.type) {
+            case 'place':
+                if (typeof aiMove.index === 'number') {
+                    if (this.countPlayerMarkers(this.gameState.currentPlayer) < this.gameState.markersPerPlayer) {
+                        const cell = this.gameBoard.children[aiMove.index];
+                        this.placeMarker(aiMove.index, cell);
+                    }
+                }
+                break;
+            case 'move':
+                if (typeof aiMove.from === 'number' && typeof aiMove.to === 'number') {
                     this.moveMarker(aiMove.from, aiMove.to);
-                    break;
-                case 'grid':
+                }
+                break;
+            case 'grid':
+                if (aiMove.direction) {
                     this.moveGrid(aiMove.direction);
-                    break;
-            }
+                }
+                break;
         }
     }
 

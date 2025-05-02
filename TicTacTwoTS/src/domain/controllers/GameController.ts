@@ -298,9 +298,11 @@ export default class GameController {
     switch (aiMove.type) {
       case 'place':
         if (typeof aiMove.index === 'number') {
-          const children = Array.from(this.gameBoard.children);
-          const cell = children[aiMove.index] as HTMLDivElement;
-          this.placeMarker(aiMove.index, cell);
+          if (this.countPlayerMarkers(this.gameState.currentPlayer) < this.gameState.markersPerPlayer) {
+            const children = Array.from(this.gameBoard.children);
+            const cell = children[aiMove.index] as HTMLDivElement;
+            this.placeMarker(aiMove.index, cell);
+          }
         }
         break;
       case 'move':

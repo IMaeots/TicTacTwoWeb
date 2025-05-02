@@ -163,7 +163,9 @@ export const useGameStore = defineStore('game', {
                     switch (move.type) {
                         case MoveType.Place:
                             if (move.index !== undefined) {
-                                await this.handleCellClick(move.index);
+                                if (this.countPlayerMarkers(this.gameState.currentPlayer) < this.gameState.markersPerPlayer) {
+                                    await this.handleCellClick(move.index);
+                                }
                             }
                             break;
                         case MoveType.Move:

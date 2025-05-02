@@ -1,19 +1,23 @@
 export function getAIMove(gameState) {
     let opponent = gameState.currentPlayer === "X" ? "O" : "X";
 
-    let winningMove = findWinningMove(gameState, gameState.currentPlayer);
-    if (winningMove !== null) {
-        return { type: 'place', index: winningMove };
-    }
+    const playerMarkerCount = gameState.boardState.filter(cell => cell === gameState.currentPlayer).length;
+    
+    if (playerMarkerCount < gameState.markersPerPlayer) {
+        let winningMove = findWinningMove(gameState, gameState.currentPlayer);
+        if (winningMove !== null) {
+            return { type: 'place', index: winningMove };
+        }
 
-    let blockingMove = findWinningMove(gameState, opponent);
-    if (blockingMove !== null) {
-        return { type: 'place', index: blockingMove };
-    }
+        let blockingMove = findWinningMove(gameState, opponent);
+        if (blockingMove !== null) {
+            return { type: 'place', index: blockingMove };
+        }
 
-    let randomBasicMove = chooseRandomMove(gameState);
-    if (randomBasicMove !== null) {
-        return { type: 'place', index: randomBasicMove };
+        let randomBasicMove = chooseRandomMove(gameState);
+        if (randomBasicMove !== null) {
+            return { type: 'place', index: randomBasicMove };
+        }
     }
 
     let reMove = getReMove(gameState);
@@ -59,18 +63,13 @@ function chooseRandomMove(gameState) {
 }
 
 function getReMove(gameState) {
-    let { boardState, currentPlayer, gridPosition } = gameState;
+    let { boardState, currentPlayer, gridPosition, playableCells } = gameState;
     let allBotMarkers = [];
 
-    let startX = gridPosition.row * 5;
-    let startY = gridPosition.col;
 
-    for (let x = startX; x < startX + 3; x++) {
-        for (let y = startY; y < startY + 3; y++) {
-            let index = x + y * 5;
-            if (boardState[index] === currentPlayer) {
-                allBotMarkers.push(index);
-            }
+    for (let cellIndex of playableCells) {
+        if (boardState[cellIndex] === currentPlayer) {
+            allBotMarkers.push(cellIndex);
         }
     }
 

@@ -3,20 +3,24 @@ import { Direction, MoveType, PlayerMark } from '@/domain/models/Enums';
 
 export function getAIMove(gameState: GameState): AIMove | null {
   const opponent: PlayerMark = gameState.currentPlayer === PlayerMark.X ? PlayerMark.O : PlayerMark.X;
+  
+  const playerMarkerCount = gameState.boardState.filter(cell => cell === gameState.currentPlayer).length;
+  
+  if (playerMarkerCount < gameState.markersPerPlayer) {
+    const winningMove = findWinningMove(gameState, gameState.currentPlayer);
+    if (winningMove !== null) {
+      return { type: MoveType.Place, index: winningMove };
+    }
 
-  const winningMove = findWinningMove(gameState, gameState.currentPlayer);
-  if (winningMove !== null) {
-    return { type: MoveType.Place, index: winningMove };
-  }
+    const blockingMove = findWinningMove(gameState, opponent);
+    if (blockingMove !== null) {
+      return { type: MoveType.Place, index: blockingMove };
+    }
 
-  const blockingMove = findWinningMove(gameState, opponent);
-  if (blockingMove !== null) {
-    return { type: MoveType.Place, index: blockingMove };
-  }
-
-  const randomBasicMove = chooseRandomMove(gameState);
-  if (randomBasicMove !== null) {
-    return { type: MoveType.Place, index: randomBasicMove };
+    const randomBasicMove = chooseRandomMove(gameState);
+    if (randomBasicMove !== null) {
+      return { type: MoveType.Place, index: randomBasicMove };
+    }
   }
 
   const reMove = getReMove(gameState);
@@ -63,18 +67,12 @@ function chooseRandomMove(gameState: GameState): number | null {
 }
 
 function getReMove(gameState: GameState): { from: number; to: number } | null {
-  const { boardState, currentPlayer, gridPosition } = gameState;
+  const { boardState, currentPlayer, playableCells } = gameState;
   const allBotMarkers: number[] = [];
 
-  const startX = gridPosition.row * 5;
-  const startY = gridPosition.col;
-
-  for (let x = startX; x < startX + 3; x++) {
-    for (let y = startY; y < startY + 3; y++) {
-      const index = x + y * 5;
-      if (boardState[index] === currentPlayer) {
-        allBotMarkers.push(index);
-      }
+  for (const cellIndex of playableCells) {
+    if (boardState[cellIndex] === currentPlayer) {
+      allBotMarkers.push(cellIndex);
     }
   }
 

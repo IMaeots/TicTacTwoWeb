@@ -1,7 +1,7 @@
 # TicTacTwoWeb - Multi-Tech Stack Collection
 
 A collection of **Tic-Tac-Toe** game implementations across different technologies: **Vanilla JavaScript**, **TypeScript**, and **Vue.js**. This repo contains 3 different versions of the TicTacTwo game, each with the same core gameplay, but built using a different approach.
-This is repository includes 3 of the total 7 TicTacTwo games developed for Uni 2024-2025.
+This repository includes 3 of the total 7 TicTacTwo games developed for Uni 2024-2025.
 
 Each folder contains its own `README.md` to explain the specific implementation details of that version.
 
@@ -72,9 +72,15 @@ TicTacTwo is an advanced version of **Tic-Tac-Toe** with a unique twist:
 Clone this repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/IMaeots/TicTacTwoWeb.git
 cd TicTacTwoWeb
 ```
+
+## Screenshots
+All look very similar in UI:
+![Javascript game screenshot](images/screenshot-js.jpg)
+![Typescript game screenshot](images/screenshot-ts.jpg)
+![Vue game screenshot](images/screenshot-vue.jpg)
 
 ## 📝 License
 
